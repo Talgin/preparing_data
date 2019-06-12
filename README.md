@@ -1,5 +1,5 @@
 # preparing_data
-Data preparation to use with our deep learning face recognition system based
+Data preparation to use with our deep learning face recognition system
 
 insightface_paris_gen.py - module to generate pairs of images and their identity (1 if the same person, 0 if different)
 
