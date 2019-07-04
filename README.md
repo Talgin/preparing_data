@@ -24,6 +24,7 @@ With any questions regarding usage, please send me a message to islamgozhayev@ya
 
 EXTRA: Parse folder with face_recognition => count number of occurences of each descriptor of the image => 
 If one descriptor appears more than 10 times => write it to another folder
+
 EXTRA1: Before cropping faces from collective images: 
 - take known image
 - parse folder with images of this person
