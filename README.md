@@ -22,6 +22,8 @@ With any questions regarding usage, please send me a message to islamgozhayev@ya
 10. create .bin file using dataset2bin.py by setting 			=> ready ------------------------------ usage: python dataset2bin.py --data-dir /your/dataset/directory --image-size 112,112 --output /output/directory/to/dave/bin
 11. Yahoooooo, STAAAAARRRRTTTT TRRRRRRAAAAAIIIIINIIIING!!!
 
+EXAMPLE FOLDERS: https://www.dropbox.com/s/i10tma4zqygdxdm/data.zip?dl=0
+
 EXTRA: Parse folder with face_recognition => count number of occurences of each descriptor of the image => 
 If one descriptor appears more than 10 times => write it to another folder
 
