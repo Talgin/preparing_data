@@ -21,3 +21,13 @@ With any questions regarding usage, please send me a message to islamgozhayev@ya
 9. create pairs.txt file using gen_pairs_lfw.py 				=> if you don't have loop in generate() function you have to write it with range(10), because you have to create 10-folds cross validation .bin
 10. create .bin file using dataset2bin.py by setting 			=> ready ------------------------------ usage: python dataset2bin.py --data-dir /your/dataset/directory --image-size 112,112 --output /output/directory/to/dave/bin
 11. Yahoooooo, STAAAAARRRRTTTT TRRRRRRAAAAAIIIIINIIIING!!!
+
+EXTRA: Parse folder with face_recognition => count number of occurences of each descriptor of the image => 
+If one descriptor appears more than 10 times => write it to another folder
+EXTRA1: Before cropping faces from collective images: 
+- take known image
+- parse folder with images of this person
+- take one image
+- run dlib's get_frontal_face_detector on it
+- compare each face with known image
+- save the most similar one/ones
