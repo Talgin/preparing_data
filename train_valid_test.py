@@ -14,69 +14,52 @@ from time import time
 from time import sleep
 from scipy import ndimage
 from keras.preprocessing.image import ImageDataGenerator, array_to_img, img_to_array, load_img
+from sklearn.model_selection import train_test_split
+import random
+import math
+import shutil
 
 # arguments to pass in command line 
 parser = argparse.ArgumentParser(description='Rename images in the folder according to LFW format: Name_Surname_0001.jpg, Name_Surname_0002.jpg, etc.')
 parser.add_argument('--dataset-dir', default='', help='Full path to the directory with peeople and their names, folder should denote the Name_Surname of the person')
+parser.add_argument('--target-dir', default='', help='Full path to the directory where our identified images should be saved.')
 
 # reading the passed arguments
 args = parser.parse_args()
 data_dir = args.dataset_dir
+target_dir = args.target_dir
 
 onlyfiles = []
-
-# display(_Imgdis(filename=folder + "/" + onlyfiles[i], width=112, height=112))
+cont = 0
 
 for folder in os.listdir(data_dir):
     i = 1
     # print(folder)
     fold = data_dir + '/' + folder
+    cnt = 0 						# count the number of files in a folder
     for img in os.listdir(fold):
     	# print(img)
     	onlyfiles.append(img)
-
-
-print("Working with {0} images".format(len(onlyfiles)))
-print("Image examples: ")
-
-for i in range(0, 10):
-    print(onlyfiles[i])
-
-train_files = []
-y_train = []
-i=0
-for _file in onlyfiles:
-    train_files.append(_file)
-    label_in_file = _file.find("_")
-    y_train.append(int(_file[0:label_in_file]))
+    	cnt += 1
+    print(cnt)
+    percent = math.ceil((cnt * 10) / 100)
     
-print("Files in train_files: %d" % len(train_files))
+    target_folder = target_dir + '/' + folder
 
-# Original Dimensions
-image_width = 640
-image_height = 480
-ratio = 4
+    # create folder for current person's test images
+    print(target_folder)
+    try:
+    	os.mkdir(target_folder)
+    except:
+    	print('Such folder already exists')
+    	continue
 
-image_width = int(image_width / ratio)
-image_height = int(image_height / ratio)
+    for moving in range(0, int(percent)):
+    	random_file = random.choice(os.listdir(fold))
+    	print(random_file)
+    	file_to_move = fold + '/' + random_file
+    	new_file = target_folder + '/' + random_file
+    	shutil.move(file_to_move, new_file)
+    	cont += 1
 
-channels = 3
-nb_classes = 1
-
-dataset = np.ndarray(shape=(len(train_files), channels, image_height, image_width),
-                     dtype=np.float32)
-
-i = 0
-for _file in train_files:
-    img = load_img(folder + "/" + _file)  # this is a PIL image
-    img.thumbnail((image_width, image_height))
-    # Convert to Numpy Array
-    x = img_to_array(img)  
-    x = x.reshape((3, 120, 160))
-    # Normalize
-    x = (x - 128.0) / 128.0
-    dataset[i] = x
-    i += 1
-    if i % 250 == 0:
-        print("%d images to array" % i)
-print("All images to array!")
+print(cont)
