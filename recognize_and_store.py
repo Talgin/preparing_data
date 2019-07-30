@@ -9,8 +9,8 @@
 # In case of positive match we create a directory for this person in another target folder (--target-dir)
 # and save all matching images in here.
 # As the face recognition tool we used A. Geitgey's https://github.com/ageitgey/face_recognition library
-# Instructions on how to install and reuirements could be found in the above github directory
-# With any question regarding the this module email me to islamgozhayev@tengrilab.kz or write to +77751033311 (WhatsApp) 
+# Instructions on how to install and requirements could be found in the above github directory
+# With any questions regarding this module email me to islamgozhayev@tengrilab.kz or write to +77751033311 (WhatsApp) 
 # Good luck!
 import face_recognition
 import argparse
@@ -28,12 +28,22 @@ known_dir = args.known_dir
 unknown_dir = args.unknown_dir
 target_dir = args.target_dir
 
+lost_dir = []
+lost_embeddings = []
 # Open the known_dir, get one person's image and search similar people in unknown_dir
 for image in os.listdir(known_dir):
     print(unknown_dir + '/' + image)    
     known_person = face_recognition.load_image_file(known_dir + '/' + image)
-    known_person_encoding = face_recognition.face_encodings(known_person)[0]
     
+    # Try to get the embeddings from the given person's image, if not found throw exception
+    # and store this image in a lost_embeddings list
+    try:
+        known_person_encoding = face_recognition.face_encodings(known_person)[0]
+    except:
+        print('Face encodings cannot be extracted!')
+        lost_embeddings.append(image)
+        continue
+
     target_folder = target_dir + '/' + image
     print(target_folder)
     try:
@@ -45,30 +55,38 @@ for image in os.listdir(known_dir):
     person_folder = unknown_dir + '/' + image
     cnt = 0
     i = 1
-    for img in os.listdir(person_folder):
-    	# getting encodings of current image in our folder
-    	unknown_person = face_recognition.load_image_file(person_folder + '/' + img)
-    	encodings = face_recognition.face_encodings(unknown_person)
-    	if len(encodings) > 0:
-    		unknown_person_encoding = encodings[0]
-    	else:
-    		print('No face found in the image: ', img)
-    		continue
 
-    	# compare encodings of current folder image and the anchor image
-    	results = face_recognition.compare_faces([known_person_encoding], unknown_person_encoding, 0.50)
+    # Trying to create a folder for the given person, if the desired person's folder doesn't 
+    # exist throw exception and continue with the next person
+    try:
+        for img in os.listdir(person_folder):
+        	# getting encodings of current image in our folder
+        	unknown_person = face_recognition.load_image_file(person_folder + '/' + img)
+        	encodings = face_recognition.face_encodings(unknown_person)
+        	if len(encodings) > 0:                             # if we found a person, then get its encodings
+        		unknown_person_encoding = encodings[0] 
+        	else:                                              # if no person found in the image, leave this image
+        		print('No face found in the image: ', img)
+        		continue
 
-    	if results[0] == True:
-    		print(img, ' is the same person')
-    		if i == 0:
-    			stri = '00'
-    		elif 0 < i < 10:
-    			stri = '0' + str(i)
-    		else:
-    			stri = str(i)
-    		shutil.copy(person_folder + '/' + img, target_folder + '/' + image + "_00" + stri)
-    		i += 1
-    	else:
-    		print(img, ' is NOT THIS person')
-    	cnt += 1
-    print('Total images processed in this directory: ', cnt)
+        	# compare encodings of current folder image and the anchor image
+        	results = face_recognition.compare_faces([known_person_encoding], unknown_person_encoding, 0.50)
+
+        	if results[0] == True:                             # if two people encodings are similar, then save it according to LFW format
+        		print(img, ' is the same person')
+        		if i == 0:
+        			stri = '00'
+        		elif 0 < i < 10:
+        			stri = '0' + str(i)
+        		else:
+        			stri = str(i)
+        		shutil.copy(person_folder + '/' + img, target_folder + '/' + image + "_00" + stri)
+        		i += 1
+        	else:
+        		print(img, ' is NOT THIS person')
+        	cnt += 1
+        print('Total images processed in this directory: ', cnt)
+    except:
+        print('There is NO FOLDER with this name')
+        lost_dir.append(image)
+        continue
