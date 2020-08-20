@@ -7,7 +7,7 @@ With any questions regarding usage, please send me a message to islamgozhayev@ya
 
 ----- ADDITIONAL NOTES -----
 
-1. Collect dataset => refine, delete advertisement pages
+1. Collect dataset => refine, delete non-people images
 2. Crop faces from images with multiple people in one folder => crop.py => python crop.py --data-dir /home/ti/path_to_uncropped_data --target-dir /home/ti/path_to_destination_directory
 3. Refine folder names and images => rename_folders_v2.py (e.g. python rename_folders_v2.py --data-dir /home/ti/Downloads/crop_and_find/faces501) (this module renames folder names of each person: it merges all the letters, removing special characters (.,-, etc) and splits the remaining string into two parts in the middle with underline '_' renamer_lfw.py (rename image names according to LFW dataset format)
 4. From each folder select one person's image as an anchor (you will be comparing each image in this folder with anchor image to leave only one person's images) => place these images in known_dir with and rename each one according to this person's folder name (if folder name was John_Hopkins, anchor name should be John_Hopkins.jpg)
