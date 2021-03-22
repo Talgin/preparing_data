@@ -1,5 +1,5 @@
 # preparing_data
-Data preparation to use with our deep learning face recognition system
+Face Data preparation process to train a model for deep learning face recognition system
 
 renamer.py - module to rename names of images in our dataset folder (format: Name_Surname_0001.png, Name_Surname_0002.png, etc.)
 
@@ -30,4 +30,6 @@ EXTRA1 (This process can save you some time): Before cropping faces from collect
 - compare each face on this image with known image using face_recognition library
 - save the most similar one
 - repeat this process until you finish with all of the images from this person's folder
-- check each folder by hand 
+- check each folder by hand
+
+NOTE: There are a lot of tools like Amazon Turk, Toloka, etc. that can help you with annotations (of course it will cost some money :) ).   
