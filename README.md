@@ -3,7 +3,7 @@ Face Data preparation process to train a model for deep learning face recognitio
 
 renamer.py - module to rename names of images in our dataset folder (format: Name_Surname_0001.png, Name_Surname_0002.png, etc.)
 
-With any questions regarding usage, please send me a message to islamgozhayev@yandex.ru
+With any questions regarding usage, please send me a message to talgat.islamgozhayev@nu.edu.kz
 
 ----- ADDITIONAL NOTES -----
 
